@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flux RSS avec filtre par mot-clé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .rss-feed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 0;
+            list-style-type: none;
+        }
+        .rss-item {
+            width: calc(33.33% - 20px); /* Calculer la largeur pour 3 cartes par ligne */
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 300px; /* Hauteur totale de la carte */
+        }
+        .rss-item:hover {
+            transform: translateY(-5px);
+        }
+        .rss-item img {
+            width: 100%;
+            height: 150px; /* Hauteur de l'image */
+            object-fit: cover;
+        }
+        .rss-item-content {
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .rss-item h3 {
+            margin: 0 0 5px; /* Réduire la marge */
+            font-size: 14px; /* Taille de police réduite */
+            color: #333;
+        }
+        .rss-item p {
+            margin: 0 0 5px; /* Réduire la marge */
+            color: #666;
+            font-size: 12px; /* Taille de police réduite */
+            line-height: 1.4;
+            flex-grow: 1;
+            overflow: hidden; /* Masquer le texte débordant */
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limiter à 3 lignes */
+            -webkit-box-orient: vertical;
+        }
+        .rss-item a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .rss-item a:hover {
+            text-decoration: underline;
+        }
+        .read-more {
+            margin-top: 10px;
+            text-align: right;
+            font-weight: bold;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .filter-container input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+            width: 200px;
+        }
+        .filter-container button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="filter-container">
+        <input type="text" id="keyword" placeholder="Mot-clé...">
+        <button onclick="filterArticles()">Filtrer</button>
+    </div>
+    <ul class="rss-feed" id="rss-feed"></ul>
+
+    <script>
+
+        // Fonction de filtrage des articles par mot-clé
+        function filterArticles() {
+                const keyword = document.getElementById('keyword').value.toLowerCase();
+                const articles = document.querySelectorAll('.rss-item');
+
+                articles.forEach(article => {
+                    const title = article.querySelector('h3 a').innerText.toLowerCase();
+                    const description = article.querySelector('p').innerText.toLowerCase();
+
+                    if (title.includes(keyword) || description.includes(keyword)) {
+                        article.style.display = 'block';
+                    } else {
+                        article.style.display = 'none';
+                    }
+                });
+            }
+        document.addEventListener("DOMContentLoaded", function() {
+            // URL du script PHP
+            const rssUrl = 'fetch_rss.php';
+
+            // Appeler le script PHP pour récupérer le flux RSS
+            fetch(rssUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayRssFeed(data);
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+
+            function displayRssFeed(data) {
+                const feedContainer = document.getElementById('rss-feed');
+                const items = data.channel.item;
+
+                // Vérifier s'il y a des articles
+                if (!items) {
+                    feedContainer.innerHTML = '<p>Aucun article trouvé.</p>';
+                    return;
+                }
+
+                // Parcourir et afficher chaque article
+                items.forEach(item => {
+                    const itemLi = document.createElement('li');
+                    itemLi.classList.add('rss-item');
+
+                    const descriptionDiv = document.createElement('div');
+                    descriptionDiv.innerHTML = item.description;
+
+                    // Extraire et afficher les images de la description
+                    const img = descriptionDiv.querySelector('img');
+                    if (img) {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = img.getAttribute('data-src') || img.getAttribute('src');
+                        itemLi.appendChild(imgElement);
+                    }
+
+                    const contentDiv = document.createElement('div');
+                    contentDiv.classList.add('rss-item-content');
+
+                    const title = document.createElement('h3');
+                    title.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+                    contentDiv.appendChild(title);
+
+                    const description = document.createElement('p');
+                    description.textContent = descriptionDiv.textContent;
+                    contentDiv.appendChild(description);
+
+                    // Ajouter un lien "En savoir plus" si le texte est trop long
+                    if (descriptionDiv.textContent.length > 100) {
+                        const readMore = document.createElement('div');
+                        readMore.classList.add('read-more');
+                        readMore.innerHTML = `<a href="${item.link}" target="_blank">En savoir plus</a>`;
+                        contentDiv.appendChild(readMore);
+                    }
+
+                    itemLi.appendChild(contentDiv);
+                    feedContainer.appendChild(itemLi);
+                });
+            }
+
+            
+        });
+    </script>
+</body>
+</html>
