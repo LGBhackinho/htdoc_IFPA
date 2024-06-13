@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+</head>
+<body>
+    <h1>Formulaire de Connexion</h1>
+    <form action="connexion.php" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        
+        <label for="mot_de_passe">Mot de passe:</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe" required><br>
+        
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <h1>Rechercher un utilisateur</h1>
+    <input type="text" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Mot de passe">
+    <button onclick="fetchData()">Rechercher</button>
+
+    <div id="result"></div>
+    <script>
+        async function fetchData() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch(`connexion.php?email=${email}&password=${password}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                const resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = ""; // Clear previous results
+
+                if (data.status === "ok") {
+                    // Redirige vers la page de profil ou une autre page après une connexion réussie
+                    window.location.href = "profileUtilisateur.html";
+                } else {
+                    resultDiv.innerHTML = `<p>${data.data}</p>`;
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                const resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = `<p>Erreur de récupération des données: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

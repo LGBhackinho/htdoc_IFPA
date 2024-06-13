@@ -1,0 +1,27 @@
+<?php
+session_start();
+if (!isset($_SESSION['email'])) {
+    header("Location: connexion.html");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur</title>
+</head>
+<body>
+    <h1>Profil Utilisateur</h1>
+    <p>Nom: <?php echo htmlspecialchars($_SESSION['nom']); ?></p>
+    <p>Prénom: <?php echo htmlspecialchars($_SESSION['prenom']); ?></p>
+    <p>Âge: <?php echo htmlspecialchars($_SESSION['age']); ?></p>
+    <p>Métier: <?php echo htmlspecialchars($_SESSION['metier']); ?></p>
+    <p>Email: <?php echo htmlspecialchars($_SESSION['email']); ?></p>
+    <form action="deconnexion.php" method="post">
+        <button type="submit">Se déconnecter</button>
+    </form>
+</body>
+</html>
+

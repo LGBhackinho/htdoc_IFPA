@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    
+</head>
+<body>
+
+    <!-- traitement par fichier PHP et donc ajouter des echo  -->
+    <form action="connexion.php" method="get">
+        <label>email : <input type="text" name=email required> </label>
+        <label>PASSWORD : <input type="password" name=password required> </label>
+        <input type="submit" value=ENVOYER>
+        
+       
+    
+    <!-- traitement envoye au fichier php mais traiter par le js pour l aficcher apres avoir recu le json -->
+    </form>
+    <h1>Rechercher un utilisateur</h1>
+    <input type="text" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Mot de passe">
+    <button onclick="fetchData()">Rechercher</button>
+
+    <div id="result"></div>
+    
+    <!-- <form action="ExerciceAPI.php" method="post">
+        <label>TOKEN : <input type="text" name="token" required> </label>
+        <input type="submit" value=ENVOYER>
+    </form> -->
+
+    <a href="inscription1-2.html">Page principale</a><br><br>
+	
+    <script>
+        async function fetchData() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch(`connexion.php?email=${email}&password=${password}`);
+            console.log(response)
+            const data = await response.json();
+            console.log(data)
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = ""; // Clear previous results
+
+            if (data.status === "ok") {
+                const user = data.data;
+                const table = `<p>Voici tes information : </p><br> 
+                    <table border="1">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Âge</th>
+                        </tr>
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.nom}</td>
+                            <td>${user.prenom}</td>
+                            <td>${user.email}</td>
+                            <td>${user.age}</td>
+                        </tr>
+                    </table><br>
+                `;
+                resultDiv.innerHTML = table;
+            } else {
+                resultDiv.innerHTML = `<p>${data.data}</p>`;
+               
+            }
+        }
+    </script>
+</body>
+</html>
+

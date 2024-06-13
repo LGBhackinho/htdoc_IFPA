@@ -1,0 +1,38 @@
+
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- Code debuter mais non utiliser pour affichage avec javascript lie a connexion.php -->
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur</title>
+</head>
+<body>
+    <h2>Profil Utilisateur</h2>
+    <div id="profile"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer les données de l'utilisateur à partir du localStorage
+            var user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                var profileDiv = document.getElementById('profile');
+                profileDiv.innerHTML = `
+                    <p>Prenom: ${user.prenom}</p>
+                    <p>Email: ${user.email}</p>
+                    <p>Nom: ${user.nom}</p>
+                    <!-- Affichez d'autres informations utilisateur ici -->
+                `;
+            } else {
+                document.getElementById('profile').innerHTML = '<p>Aucun utilisateur connecté.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

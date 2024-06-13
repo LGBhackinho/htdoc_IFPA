@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Partie 2</title>
+</head>
+<body>
+    <h1>Formulaire d'Inscription - Partie 2</h1>
+    <form action="index.php" method="post">
+        <input type="hidden" name="nom" value="<?php echo $_GET['nom']; ?>">
+        <input type="hidden" name="prenom" value="<?php echo $_GET['prenom']; ?>">
+        <input type="hidden" name="age" value="<?php echo $_GET['age']; ?>">
+        <input type="hidden" name="metier" value="<?php echo $_GET['metier']; ?>">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        
+        <label for="mot_de_passe">Mot de passe:</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe" required><br>
+        
+        <button type="submit">S'inscrire</button>
+    </form>
+</body>
+</html>
+
+

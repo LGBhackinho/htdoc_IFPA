@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Exemple d insertion formulaire BDD</title>
+</head>
+<body>
+	<form method="get" action="index.php">
+		
+		<label for="nom">Nom :</label>
+		<input type="text" id="nom" name="nom" required />
+		<br>
+		<label for="prenom">Prénom :</label>
+		<input type="text" id="prenom" name="prenom" />
+		<br>
+		<label for="age">age :</label>
+		<input type="number" id="age" name="age" />
+		<br>
+		
+		
+		<label for="metier">metier :</label>
+		<input type="text" id="metier" name="metier" />
+		<br>
+		<label for="annee_exp">annee experience :</label>
+		<input type="number" id="annee_exp" name="annee_exp" />
+		<br>
+		<label for="langue">langue parlee :</label>
+		<input type="text" id="langue" name="langue" />
+		<br>
+		<label for="projet">projet pro :</label>
+		<input type="text" id="projet" name="projet" />
+		<br>
+		<label for="email">Email :</label>
+		<input type="text" id="email" name="email"required />
+		<br>
+		<label for="mdp">Mot de passe :</label>
+		<input type="password" id="mdp" name="mdp" required />
+		<br>
+		<input type="submit" value="Créer un utilisateur" />
+	</form>
+
+	<form action="connexion.html">
+        <input type="submit" value="connexion">
+    </form><br>
+
+
+	
+	
+	<a href="user_list.php">Liste en tableau de tous les utilisateur</a>
+
+
+
+</body>
+</html>
