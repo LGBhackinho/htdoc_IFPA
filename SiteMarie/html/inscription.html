@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/inscription.css" />
+    <title>Marie CLEMENT Nutrition Santé</title>
+    
+    <link rel="shortcut icon" href="/siteMarie/images/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div
+      class="wrapper"
+      style="background-image: url('../images/bg-registration-form-1.jpg')"
+    >
+      <div class="inner">
+        <div class="image-holder">
+          <img src="../images/registration-form-1.jpg" alt="" />
+        </div>
+        <form id="registrationForm">
+          <h3>Formulaire d'inscription</h3>
+          <div class="form-group">
+            <input
+              type="text"
+              name="prenom"
+              placeholder="Prénom"
+              class="form-control"
+              required
+            />
+            <input
+              type="text"
+              name="nom"
+              placeholder="Nom"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              name="adresse"
+              placeholder="Adresse"
+              class="form-control"
+              required
+            />
+            <input
+              type="text"
+              name="telephone"
+              placeholder="Téléphone"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              name="age"
+              placeholder="Âge"
+              class="form-control"
+              required
+            />
+            <input
+              type="text"
+              name="poids"
+              placeholder="Poids (kg)"
+              class="form-control"
+              required
+            />
+            <input
+              type="text"
+              name="taille"
+              placeholder="Taille (cm)"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <select name="genre" id="genre" class="form-control" required>
+              <option value="" disabled selected>Genre</option>
+              <option value="femme">Femme</option>
+              <option value="homme">Homme</option>
+            </select>
+            <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
+
+            <select name="activite" id="activite" class="form-control" required>
+              <option value="" disabled selected>Activité</option>
+              <option value="1">Peu ou pas d’exercice/semaine</option>
+              <option value="1.15">1-2 fois / semaine</option>
+              <option value="1.2">3-5 fois / semaine</option>
+              <option value="1.6">6-7 fois / semaine</option>
+            </select>
+            <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
+          </div>
+          <div class="form-wrapper">
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Email"
+              class="form-control"
+              required
+            />
+            <i class="zmdi zmdi-email"></i>
+            <span id="emailError" style="color: red"></span>
+          </div>
+          <div class="form-wrapper">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Mot de passe"
+              class="form-control"
+              required
+            />
+            <i class="zmdi zmdi-lock"></i>
+          </div>
+          <div class="form-wrapper">
+            <input
+              type="password"
+              name="confirm_password"
+              id="confirm_password"
+              placeholder="Confirmer mot de passe"
+              class="form-control"
+              required
+            />
+            <i class="zmdi zmdi-lock"></i>
+            <span id="passwordError" style="color: red"></span>
+          </div>
+          <div id="generalError" style="color: red"></div>
+          <button type="submit">
+            Enregistrer
+            <i class="zmdi zmdi-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var formData = new FormData(this);
+
+          fetch("/siteMarie/php/inscription.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                window.location.href = "../index.html";
+              } else {
+                document.getElementById("emailError").textContent =
+                  data.errors.email;
+                document.getElementById("passwordError").textContent =
+                  data.errors.password;
+                document.getElementById("generalError").textContent =
+                  data.errors.general;
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+  </body>
+</html>

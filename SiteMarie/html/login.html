@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="../css/login.css">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Marie CLEMENT Nutrition Santé</title>
+    
+    <link rel="shortcut icon" href="/siteMarie/images/favicon.ico" type="image/x-icon">
+    
+    <title>Connexion</title>
+</head>
+
+<body>
+    <div class="main">
+        <p class="sign" align="center">Connexion</p>
+        <form class="form1" id="loginForm">
+            <input class="un" type="text" align="center" placeholder="email" name="email">
+            <input class="pass" type="password" align="center" placeholder="Mot de passe" name="password">
+            <button type="submit" class="submit" align="center">Connexion</button>
+            <p id="error-message" style="color:red;" align="center"></p>
+            <p class="forgot" align="center"><a href="#">Mot de passe oublié</a></p>
+        </form>
+       
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/siteMarie/php/login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '../index.html';
+                } else {
+                    document.getElementById('error-message').textContent = data.message;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>

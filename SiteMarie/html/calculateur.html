@@ -1,0 +1,160 @@
+
+   <div class="container-general">
+        <div class="cont-calculateur">
+            <h1>Calculateur de calorie individuel</h1>
+            <br>
+            <form>
+                <?php
+            session_start();
+            
+            // Vérifier si l'utilisateur est connecté
+            $logged_in = isset($_SESSION['loggedin']);
+            
+            $poids = isset($_SESSION['poids']) ? $_SESSION['poids'] : null;
+            $taille = isset($_SESSION['taille']) ? $_SESSION['taille'] : null;
+            $age = isset($_SESSION['age']) ? $_SESSION['age'] : null;
+            $genre = isset($_SESSION['genre']) ? $_SESSION['genre'] : null;
+            $activite = isset($_SESSION['activite']) ? $_SESSION['activite'] : null;
+
+            
+            
+            ?>
+            <?php
+                     
+            echo '<div class="form-group">
+                <label for="poidsInitial">Poids Initial (kg):</label>
+                <input type="number" id="poidsInitial" name="poidsInitial" value="' . (isset($_SESSION['poids']) ? $_SESSION['poids'] : '') . '" required>
+            </div>';
+            ?>
+            
+               
+
+                <div class="form-group">
+                    <?php
+                    if (!$logged_in) {
+                       
+                        echo '<label for="taille">Taille (cm):</label>
+                        <input type="number" id="taille"required >
+                    
+                    
+                </div>
+                <div class="form-group">
+                    <label for="age">age :</label>
+                        <input type="number" id="age" required >
+                    
+                    
+                </div>
+                <div class="form-group">
+                    <label for="genre">Genre :</label>
+                        <select name="genre" id="genre" required>
+                            <option disabled selected>selection</option>
+                            <option value="femme">FEMME</option>
+                            <option value="homme">HOMME</option>
+                        </select>
+                        
+                    
+                    
+                </div>
+                <div class="form-group">
+                    <label for="activite">Activité :</label>
+                        <select name="activite" id="activite" class="form-control" required>
+                            <option  disabled selected>Activité</option>
+                            <option value="1">Peu ou pas d’exercice/semaine</option>
+                            <option value="1.15">1-2 fois / semaine</option>
+                            <option value="1.2">3-5 fois / semaine</option>
+                            <option value="1.6">6-7 fois / semaine</option>
+                        </select>';
+                        
+                    } 
+                    ?>
+                    
+                </div>
+                
+                <div class="form-group">
+                    <label for="imc">IMC:</label>
+                    <input type="text" id="imc" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="depenseCal">Dépense Calorique Journalière (kcal):</label>
+                    <input type="text" id="depenseCal" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="tauxMasseGrasse">Taux de Masse Grasse (%):</label>
+                    <div class="form-group-tx">
+                        <input type="number" id="tauxMasseGrasse" class="readonly" readonly>
+                        <div id="dropdownIcon" class="dropdown-icon" onclick="toggleImages(this)">▼</div>
+                    </div>
+                
+                </div>
+                
+                <div id="images" class="image-selection">
+                    <img src="images/h18.png" alt="10%" onclick="selectBodyFatPercentage(18)">
+                    <img src="images/h18-25.png" alt="20%" onclick="selectBodyFatPercentage(21)">
+                    <img src="images/h25-30.png" alt="30%" onclick="selectBodyFatPercentage(27)">
+                    <img src="images/h30-35.png" alt="30%" onclick="selectBodyFatPercentage(33)">
+                    <img src="images/h35.png" alt="30%" onclick="selectBodyFatPercentage(35)">
+                </div>
+                <div class="form-group">
+                    <label for="objectifCal">Objectif Cal/j (kcal):</label>
+                    <input type="text" id="objectifCal" class="readonly" readonly>
+                    <button type="button" id="toggleDetailsButton" onclick="toggleDetails(this)" style="margin-left: 10px;">Détails</button>
+                </div>
+                <div id="details" class="details">
+                    <div class="form-group">
+                        <label for="glucides">Glucides / J (g):</label>
+                        <input type="text" id="glucides" class="readonly" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="lipides">Lipides / J (g):</label>
+                        <input type="text" id="lipides" class="readonly" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="proteines">Protéines / J (g):</label>
+                        <input type="text" id="proteines" class="readonly" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                <input type="hidden" id="taille" value="<?php echo $taille; ?>">
+                <input type="hidden" id="age" value="<?php echo $age; ?>">
+                <input type="hidden" id="genre" value="<?php echo $genre; ?>">
+                <input type="hidden" id="activite" value="<?php echo $activite; ?>">
+                    <?php
+                    if ($logged_in) {
+                        
+                        echo '<label for="poidsAtteindre">Poids à Atteindre (kg):</label>
+                        <input type="number" id="poidsAtteindre" required>';
+                    }
+                    ?>
+                    
+                </div>
+                <div class="form-group">
+                    
+                    <?php
+
+                    
+if ($logged_in) {
+    $poids = isset($_SESSION['poids']) ? $_SESSION['poids'] : null;
+            $taille = isset($_SESSION['taille']) ? $_SESSION['taille'] : null;
+            $age = isset($_SESSION['age']) ? $_SESSION['age'] : null;
+            $genre = isset($_SESSION['genre']) ? $_SESSION['genre'] : null;
+            $activite = isset($_SESSION['activite']) ? $_SESSION['activite'] : null;
+    
+            echo '<input type="button" id="calculerButtonLog" onclick="calculLog(' . $poids . ', ' . $taille . ', ' . $age . ', \'' . $genre . '\', ' . $activite . ')" value="Calcul calorie">';
+    echo '<input type="button" id="btnEnregistrer" value="Enregistrer">';
+    echo '<input type="button" id="btnInfoNurition" value="Info Nutritionnelle">';
+} else {
+    echo '<input type="button" id="calculerButton" onclick="calcul()" value="Calculer">';
+}
+
+
+?>
+
+
+                    
+                </div>
+            </form>
+        </div>
+        <div id="weightChartContainer">
+            <canvas id="weightChart"></canvas>
+        </div>
+    </div>
